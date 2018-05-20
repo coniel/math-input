@@ -1,3 +1,4 @@
+const PropTypes = require('prop-types');
 /**
  * A component that renders and animates the selection state effect effect.
  */
@@ -12,14 +13,14 @@ const {
 } = require('./prop-types');
 const zIndexes = require('./z-indexes');
 
-const Echo = React.createClass({
-    propTypes: {
-        animationDurationMs: React.PropTypes.number.isRequired,
+class Echo extends React.Component {
+    static propTypes = {
+        animationDurationMs: PropTypes.number.isRequired,
         borders: bordersPropType,
         id: keyIdPropType.isRequired,
         initialBounds: boundingBoxPropType.isRequired,
-        onAnimationFinish: React.PropTypes.func.isRequired,
-    },
+        onAnimationFinish: PropTypes.func.isRequired,
+    };
 
     componentDidMount() {
         // NOTE(charlie): This is somewhat unfortunate, as the component is
@@ -29,7 +30,7 @@ const Echo = React.createClass({
         // colocated in this file.
         const {animationDurationMs, onAnimationFinish} = this.props;
         setTimeout(() => onAnimationFinish(), animationDurationMs);
-    },
+    }
 
     render() {
         const {borders, id, initialBounds} = this.props;
@@ -55,16 +56,16 @@ const Echo = React.createClass({
                 borders={borders}
             />
         </div>;
-    },
-});
+    }
+}
 
-const EchoManager = React.createClass({
-    propTypes: {
-        echoes: React.PropTypes.arrayOf(echoPropType),
-        onAnimationFinish: React.PropTypes.func.isRequired,
-    },
+class EchoManager extends React.Component {
+    static propTypes = {
+        echoes: PropTypes.arrayOf(echoPropType),
+        onAnimationFinish: PropTypes.func.isRequired,
+    };
 
-    _animationConfigForType(animationType) {
+    _animationConfigForType = (animationType) => {
         // NOTE(charlie): These must be kept in sync with the transition
         // durations and classnames specified in echo.css.
         let animationDurationMs;
@@ -95,7 +96,7 @@ const EchoManager = React.createClass({
             animationDurationMs,
             animationTransitionName,
         };
-    },
+    };
 
     render() {
         const {echoes, onAnimationFinish} = this.props;
@@ -137,7 +138,7 @@ const EchoManager = React.createClass({
                 </ReactCSSTransitionGroup>;
             })}
         </span>;
-    },
-});
+    }
+}
 
 module.exports = EchoManager;

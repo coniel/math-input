@@ -1,3 +1,4 @@
+const PropTypes = require('prop-types');
 /* globals i18n */
 
 const React = require('react');
@@ -25,45 +26,41 @@ const rectContainsXY = (bounds, x, y) => {
             bounds.top <= y && bounds.bottom >= y);
 };
 
-const MathInput = React.createClass({
-    propTypes: {
+class MathInput extends React.Component {
+    static propTypes = {
         // The React element node associated with the keypad that will send
         // key-press events to this input. If provided, this can be used to:
         //   (1) Avoid blurring the input, on user interaction with the keypad.
         //   (2) Scroll the input into view, if it would otherwise be obscured
         //       by the keypad on focus.
         keypadElement: keypadElementPropType,
-        onBlur: React.PropTypes.func,
-        onChange: React.PropTypes.func.isRequired,
-        onFocus: React.PropTypes.func,
+        onBlur: PropTypes.func,
+        onChange: PropTypes.func.isRequired,
+        onFocus: PropTypes.func,
         // Whether the input should be scrollable. This is typically only
         // necessary when a fixed width has been provided through the `style`
         // prop.
-        scrollable: React.PropTypes.bool,
+        scrollable: PropTypes.bool,
         // An extra, vanilla style object, to be applied to the math input.
-        style: React.PropTypes.any,
-        value: React.PropTypes.string,
-    },
+        style: PropTypes.any,
+        value: PropTypes.string,
+    };
 
-    getDefaultProps() {
-        return {
-            scrollable: false,
-            style: {},
-            value: "",
-        };
-    },
+    static defaultProps = {
+        scrollable: false,
+        style: {},
+        value: "",
+    };
 
-    getInitialState() {
-        return {
-            focused: false,
-            handle: {
-                animateIntoPosition: false,
-                visible: false,
-                x: 0,
-                y: 0,
-            },
-        };
-    },
+    state = {
+        focused: false,
+        handle: {
+            animateIntoPosition: false,
+            visible: false,
+            x: 0,
+            y: 0,
+        },
+    };
 
     componentDidMount() {
         this._isMounted = true;
@@ -213,19 +210,19 @@ const MathInput = React.createClass({
         window.addEventListener('resize', this._clearKeypadBoundsCache);
         window.addEventListener(
                 'orientationchange', this._clearKeypadBoundsCache);
-    },
+    }
 
     componentWillReceiveProps(props) {
         if (this.props.keypadElement !== props.keypadElement) {
             this._clearKeypadBoundsCache();
         }
-    },
+    }
 
     componentDidUpdate() {
         if (this.mathField.getContent() !== this.props.value) {
             this.mathField.setContent(this.props.value);
         }
-    },
+    }
 
     componentWillUnmount() {
         this._isMounted = false;
@@ -239,26 +236,26 @@ const MathInput = React.createClass({
         window.removeEventListener('keydown', this._forwardGlobalKeydown);
         window.removeEventListener('keypress', this._forwardGlobalKeypress);
         window.removeEventListener('click', this.blurOnClickOutside);
-    },
+    }
 
-    _clearKeypadBoundsCache(keypadNode) {
+    _clearKeypadBoundsCache = (keypadNode) => {
         this._keypadBounds = null;
-    },
+    };
 
-    _cacheKeypadBounds(keypadNode) {
+    _cacheKeypadBounds = (keypadNode) => {
         this._keypadBounds = keypadNode.getBoundingClientRect();
-    },
+    };
 
     /** Gets and cache they bounds of the keypadElement */
-    _getKeypadBounds() {
+    _getKeypadBounds = () => {
         if (!this._keypadBounds) {
             const node = ReactDOM.findDOMNode(this.props.keypadElement);
             this._cacheKeypadBounds(node);
         }
         return this._keypadBounds;
-    },
+    };
 
-    _updateCursorHandle(animateIntoPosition) {
+    _updateCursorHandle = (animateIntoPosition) => {
         const containerBounds = this._container.getBoundingClientRect();
         const cursor = this._container.querySelector('.mq-cursor');
         const cursorBounds = cursor.getBoundingClientRect();
@@ -276,9 +273,9 @@ const MathInput = React.createClass({
                 y: cursorBounds.bottom + gapBelowCursor - containerBounds.top,
             },
         });
-    },
+    };
 
-    _hideCursorHandle() {
+    _hideCursorHandle = () => {
         this.setState({
             handle: {
                 visible: false,
@@ -286,9 +283,9 @@ const MathInput = React.createClass({
                 y: 0,
             },
         });
-    },
+    };
 
-    _forwardGlobalKeydown(e) {
+    _forwardGlobalKeydown = (e) => {
         if (e.keyCode === 13 || e.keyCode === 27) { // Enter, Esc
             this.props.keypadElement.dismiss();
             return;
@@ -304,9 +301,9 @@ const MathInput = React.createClass({
         this.mathField.fakeTextarea.value = '';
         this.mathField.fakeTextarea.dispatchEvent(e2);
         this._postKeyEvent();
-    },
+    };
 
-    _forwardGlobalKeypress(e) {
+    _forwardGlobalKeypress = (e) => {
         if (e.fakeForMathquill) {
             return;
         }
@@ -325,17 +322,17 @@ const MathInput = React.createClass({
         // this prevents the first keypress from being "lost"
         // TODO(Aria): understand why.
         setTimeout(this._postKeyEvent, 0);
-    },
+    };
 
-    blur() {
+    blur = () => {
         window.removeEventListener('keydown', this._forwardGlobalKeydown);
         window.removeEventListener('keypress', this._forwardGlobalKeypress);
         this.mathField.blur();
         this.props.onBlur && this.props.onBlur();
         this.setState({focused: false, handle: {visible: false}});
-    },
+    };
 
-    _postKeyEvent() {
+    _postKeyEvent = () => {
       // Trigger an `onChange` if the value in the input changed, and hide
       // the cursor handle whenever the user types a key. If the value
       // changed as a result of a keypress, we need to be careful not to
@@ -353,9 +350,9 @@ const MathInput = React.createClass({
       } else {
           hideCursor();
       }
-    },
+    };
 
-    focus() {
+    focus = () => {
         window.addEventListener('keydown', this._forwardGlobalKeydown);
         window.addEventListener('keypress', this._forwardGlobalKeypress);
         // Pass this component's handleKey method to the keypad so it can call
@@ -387,7 +384,7 @@ const MathInput = React.createClass({
                 }
             });
         });
-    },
+    };
 
     /**
      * Tries to determine which DOM node to place the cursor next to based on
@@ -413,7 +410,7 @@ const MathInput = React.createClass({
      *                      sign determines direction.
      * @returns {boolean} - true if a node was hit, false otherwise.
      */
-    _findHitNode(containerBounds, x, y, dx, dy) {
+    _findHitNode = (containerBounds, x, y, dx, dy) => {
         while (y >= containerBounds.top && y <= containerBounds.bottom) {
             y += dy;
 
@@ -503,7 +500,7 @@ const MathInput = React.createClass({
         }
 
         return false;
-    },
+    };
 
     /**
      * Inserts the cursor at the DOM node closest to the given coordinates,
@@ -512,7 +509,7 @@ const MathInput = React.createClass({
      * @param {number} x - the x coordinate in the viewport
      * @param {number} y - the y coordinate in the viewport
      */
-    _insertCursorAtClosestNode(x, y) {
+    _insertCursorAtClosestNode = (x, y) => {
         const cursor = this.mathField.getCursor();
 
         // Pre-emptively check if the input has any child nodes; if not, the
@@ -573,9 +570,9 @@ const MathInput = React.createClass({
             this.props.keypadElement.setCursor({
                 context: this.mathField.contextForCursor(cursor),
             });
-    },
+    };
 
-    handleTouchStart(e) {
+    handleTouchStart = (e) => {
         // Propagating touch events breaks zoom things; not propagating
         // mouse events breaks switching between inputs.
         // TODO(aria): Figure out how to simplify this for everything
@@ -603,9 +600,9 @@ const MathInput = React.createClass({
         if (!this.state.focused) {
             this.focus();
         }
-    },
+    };
 
-    handleTouchMove(e) {
+    handleTouchMove = (e) => {
         // Propagating touch events breaks zoom things; not propagating
         // mouse events breaks switching between inputs.
         // TODO(aria): Figure out how to simplify this for everything
@@ -623,9 +620,9 @@ const MathInput = React.createClass({
             const touch = e.changedTouches[0];
             this._insertCursorAtClosestNode(touch.clientX, touch.clientY);
         }
-    },
+    };
 
-    handleTouchEnd(e) {
+    handleTouchEnd = (e) => {
         // Propagating touch events breaks zoom things; not propagating
         // mouse events breaks switching between inputs.
         // TODO(aria): Figure out how to simplify this for everything
@@ -641,7 +638,7 @@ const MathInput = React.createClass({
         if (this.mathField.getContent() !== "" && this.state.focused) {
             this._updateCursorHandle();
         }
-    },
+    };
 
     /**
      * When a touch starts in the cursor handle, we track it so as to avoid
@@ -649,7 +646,7 @@ const MathInput = React.createClass({
      *
      * @param {TouchEvent} e - the raw touch event from the browser
      */
-    onCursorHandleTouchStart(e) {
+    onCursorHandleTouchStart = (e) => {
         // NOTE(charlie): The cursor handle is a child of this view, so whenever
         // it receives a touch event, that event would also typically be bubbled
         // up to our own handlers. However, we want the cursor to handle its own
@@ -663,9 +660,9 @@ const MathInput = React.createClass({
 
         // Cache the container bounds, so as to avoid re-computing.
         this._containerBounds = this._container.getBoundingClientRect();
-    },
+    };
 
-    _constrainToBound(value, min, max, friction) {
+    _constrainToBound = (value, min, max, friction) => {
         if (value < min) {
             return min + (value - min) * friction;
         } else if (value > max) {
@@ -673,7 +670,7 @@ const MathInput = React.createClass({
         } else {
             return value;
         }
-    },
+    };
 
     /**
      * When the user moves the cursor handle update the position of the cursor
@@ -681,7 +678,7 @@ const MathInput = React.createClass({
      *
      * @param {TouchEvent} e - the raw touch event from the browser
      */
-    onCursorHandleTouchMove(e) {
+    onCursorHandleTouchMove = (e) => {
         e.stopPropagation();
 
         const x = e.changedTouches[0].clientX;
@@ -727,29 +724,29 @@ const MathInput = React.createClass({
         const adjustedY = y - distanceAboveFingerToTrySelecting;
 
         this._insertCursorAtClosestNode(x, adjustedY);
-    },
+    };
 
     /**
      * When the user releases the cursor handle, animate it back into place.
      *
      * @param {TouchEvent} e - the raw touch event from the browser
      */
-    onCursorHandleTouchEnd(e) {
+    onCursorHandleTouchEnd = (e) => {
         e.stopPropagation();
 
         this._updateCursorHandle(true);
-    },
+    };
 
     /**
      * If the gesture is cancelled mid-drag, simply hide it.
      *
      * @param {TouchEvent} e - the raw touch event from the browser
      */
-    onCursorHandleTouchCancel(e) {
+    onCursorHandleTouchCancel = (e) => {
         e.stopPropagation();
 
         this._updateCursorHandle(true);
-    },
+    };
 
     render() {
         const {focused, handle} = this.state;
@@ -820,8 +817,8 @@ const MathInput = React.createClass({
                 onTouchCancel={this.onCursorHandleTouchCancel}
             />}
         </View>;
-    },
-});
+    }
+}
 
 const fontSizePt = 18;
 

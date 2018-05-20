@@ -1,3 +1,4 @@
+const PropTypes = require('prop-types');
 /**
  * A component that renders a view pager indicator, with a circular icon for
  * each page.
@@ -9,18 +10,16 @@ const {StyleSheet} = require('aphrodite');
 const {View} = require('../fake-react-native-web');
 const {pageIndicatorHeightPx, gray68, gray85} = require('./common-style');
 
-const PagerIcon = React.createClass({
-    propTypes: {
-        active: React.PropTypes.bool,
-        radiusPx: React.PropTypes.number,
-    },
+class PagerIcon extends React.Component {
+    static propTypes = {
+        active: PropTypes.bool,
+        radiusPx: PropTypes.number,
+    };
 
-    getDefaultProps() {
-        return {
-            active: false,
-            radiusPx: 4,
-        };
-    },
+    static defaultProps = {
+        active: false,
+        radiusPx: 4,
+    };
 
     render() {
         const {active, radiusPx} = this.props;
@@ -35,14 +34,14 @@ const PagerIcon = React.createClass({
                 fill={fillColor}
             />
         </svg>;
-    },
-});
+    }
+}
 
-const PagerIndicator = React.createClass({
-    propTypes: {
-        currentPage: React.PropTypes.number.isRequired,
-        numPages: React.PropTypes.number.isRequired,
-    },
+class PagerIndicator extends React.Component {
+    static propTypes = {
+        currentPage: PropTypes.number.isRequired,
+        numPages: PropTypes.number.isRequired,
+    };
 
     render() {
         const {currentPage, numPages} = this.props;
@@ -74,8 +73,8 @@ const PagerIndicator = React.createClass({
                 {indicators}
             </View>
         </View>;
-    },
-});
+    }
+}
 
 const styles = StyleSheet.create({
     indicatorStrip: {

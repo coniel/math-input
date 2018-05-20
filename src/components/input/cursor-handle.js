@@ -1,3 +1,4 @@
+const PropTypes = require('prop-types');
 /**
  * Renders the green tear-shaped handle under the cursor.
  */
@@ -19,26 +20,24 @@ const cursorHeightPx = cursorHandleDistanceMultiplier * cursorRadiusPx +
     cursorRadiusPx;
 const cursorWidthPx = 2 * cursorRadiusPx;
 
-const CursorHandle = React.createClass({
-    propTypes: {
-        animateIntoPosition: React.PropTypes.bool,
-        onTouchCancel: React.PropTypes.func.isRequired,
-        onTouchEnd: React.PropTypes.func.isRequired,
-        onTouchMove: React.PropTypes.func.isRequired,
-        onTouchStart: React.PropTypes.func.isRequired,
-        visible: React.PropTypes.bool.isRequired,
-        x: React.PropTypes.number.isRequired,
-        y: React.PropTypes.number.isRequired,
-    },
+class CursorHandle extends React.Component {
+    static propTypes = {
+        animateIntoPosition: PropTypes.bool,
+        onTouchCancel: PropTypes.func.isRequired,
+        onTouchEnd: PropTypes.func.isRequired,
+        onTouchMove: PropTypes.func.isRequired,
+        onTouchStart: PropTypes.func.isRequired,
+        visible: PropTypes.bool.isRequired,
+        x: PropTypes.number.isRequired,
+        y: PropTypes.number.isRequired,
+    };
 
-    getDefaultProps() {
-        return {
-            animateIntoPosition: false,
-            visible: false,
-            x: 0,
-            y: 0,
-        };
-    },
+    static defaultProps = {
+        animateIntoPosition: false,
+        visible: false,
+        x: 0,
+        y: 0,
+    };
 
     render() {
         const {x, y, animateIntoPosition} = this.props;
@@ -102,7 +101,7 @@ const CursorHandle = React.createClass({
                 />
             </svg>
         </span>;
-    },
-});
+    }
+}
 
 module.exports = CursorHandle;

@@ -1,3 +1,4 @@
+const PropTypes = require('prop-types');
 /**
  * A touchable wrapper around the base KeypadButton component. This button is
  * responsible for keeping our button ID system (which will be used to handle
@@ -15,18 +16,18 @@ const GestureManager = require('./gesture-manager');
 const {bordersPropType, keyIdPropType} = require('./prop-types');
 const {KeyTypes} = require('../consts');
 
-const TouchableKeypadButton = React.createClass({
-    propTypes: {
+class TouchableKeypadButton extends React.Component {
+    static propTypes = {
         borders: bordersPropType,
-        childKeyIds: React.PropTypes.arrayOf(keyIdPropType),
-        disabled: React.PropTypes.bool,
-        focused: React.PropTypes.bool,
-        gestureManager: React.PropTypes.instanceOf(GestureManager),
+        childKeyIds: PropTypes.arrayOf(keyIdPropType),
+        disabled: PropTypes.bool,
+        focused: PropTypes.bool,
+        gestureManager: PropTypes.instanceOf(GestureManager),
         id: keyIdPropType.isRequired,
-        popoverEnabled: React.PropTypes.bool,
-        style: React.PropTypes.any,
-        type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
-    },
+        popoverEnabled: PropTypes.bool,
+        style: PropTypes.any,
+        type: PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
+    };
 
     shouldComponentUpdate(newProps) {
         // We take advantage of a few different properties of our key
@@ -39,12 +40,12 @@ const TouchableKeypadButton = React.createClass({
             newProps.disabled !== this.props.disabled ||
             newProps.popoverEnabled !== this.props.popoverEnabled ||
             newProps.type !== this.props.type || !!newProps.style;
-    },
+    }
 
     componentWillUnmount() {
         const {gestureManager, id} = this.props;
         gestureManager.unregisterDOMNode(id);
-    },
+    }
 
     render() {
         const {
@@ -76,8 +77,8 @@ const TouchableKeypadButton = React.createClass({
             {...eventHandlers}
             {...rest}
         />;
-    },
-});
+    }
+}
 
 const extractProps = (keyConfig) => {
     const {ariaLabel, icon, type} = keyConfig;

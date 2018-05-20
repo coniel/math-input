@@ -1,3 +1,4 @@
+const PropTypes = require('prop-types');
 /**
  * A keypad button containing no symbols and triggering no actions on click.
  */
@@ -9,10 +10,10 @@ const GestureManager = require('./gesture-manager');
 const KeyConfigs = require('../data/key-configs');
 const KeypadButton = require('./keypad-button');
 
-const EmptyKeypadButton = React.createClass({
-    propTypes: {
-        gestureManager: React.PropTypes.instanceOf(GestureManager),
-    },
+class EmptyKeypadButton extends React.Component {
+    static propTypes = {
+        gestureManager: PropTypes.instanceOf(GestureManager),
+    };
 
     render() {
         const {gestureManager, ...rest} = this.props;
@@ -30,8 +31,8 @@ const EmptyKeypadButton = React.createClass({
             {...KeyConfigs.NOOP}
             {...rest}
         />;
-    },
-});
+    }
+}
 
 const mapStateToProps = (state) => {
     const {gestures} = state;

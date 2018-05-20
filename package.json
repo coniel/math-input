@@ -13,12 +13,13 @@
   "license": "MIT",
   "dependencies": {
     "aphrodite": "^0.2.0",
+    "jquery": "^1.12.2",
     "katex": "^0.9.0-alpha1",
     "mathquill": "^0.10.1",
-    "jquery": "^1.12.2",
     "performance-now": "^0.2.0",
-    "react-redux": "^4.4.5",
-    "redux": "^3.5.0"
+    "prop-types": "^15.6.1",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "babel-cli": "^6.8.0",
@@ -35,11 +36,11 @@
     "jsdom": "^8.4.0",
     "mocha": "^2.4.5",
     "mocha-jsdom": "^1.1.0",
-    "react": "^15.6.2",
+    "react": "^16.3.2",
     "react-addons-create-fragment": "15.0.1",
     "react-addons-css-transition-group": "15.0.1",
     "react-addons-pure-render-mixin": "15.0.1",
-    "react-dom": "^15.6.2",
+    "react-dom": "^16.3.2",
     "webpack": "^1.13.0"
   }
 }

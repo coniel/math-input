@@ -1,9 +1,9 @@
+const PropTypes = require('prop-types');
 /**
  * A component that renders a keypad button.
  */
 
 const React = require('react');
-const PureRenderMixin = require('react-addons-pure-render-mixin');
 const {connect} = require('react-redux');
 
 const {StyleSheet, css} = require('aphrodite');
@@ -28,56 +28,52 @@ const {
     keyConfigPropType,
 } = require('./prop-types');
 
-const KeypadButton = React.createClass({
-    propTypes: {
-        ariaLabel: React.PropTypes.string,
+class KeypadButton extends React.PureComponent {
+    static propTypes = {
+        ariaLabel: PropTypes.string,
         // The borders to display on the button. Typically, this should be set
         // using one of the preset `BorderStyles` options.
         borders: bordersPropType,
         // Any additional keys that can be accessed by long-pressing on the
         // button.
-        childKeys: React.PropTypes.arrayOf(keyConfigPropType),
+        childKeys: PropTypes.arrayOf(keyConfigPropType),
         // Whether the button should be rendered in a 'disabled' state, i.e.,
         // without any touch feedback.
-        disabled: React.PropTypes.bool,
-        focused: React.PropTypes.bool,
-        heightPx: React.PropTypes.number.isRequired,
+        disabled: PropTypes.bool,
+        focused: PropTypes.bool,
+        heightPx: PropTypes.number.isRequired,
         icon: iconPropType,
-        onTouchCancel: React.PropTypes.func,
-        onTouchEnd: React.PropTypes.func,
-        onTouchMove: React.PropTypes.func,
-        onTouchStart: React.PropTypes.func,
-        popoverEnabled: React.PropTypes.bool,
-        style: React.PropTypes.any,
-        type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
+        onTouchCancel: PropTypes.func,
+        onTouchEnd: PropTypes.func,
+        onTouchMove: PropTypes.func,
+        onTouchStart: PropTypes.func,
+        popoverEnabled: PropTypes.bool,
+        style: PropTypes.any,
+        type: PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
         // NOTE(charlie): We may want to make this optional for phone layouts
         // (and rely on Flexbox instead), since it might not be pixel perfect
         // with borders and such.
-        widthPx: React.PropTypes.number.isRequired,
-    },
+        widthPx: PropTypes.number.isRequired,
+    };
 
-    mixins: [PureRenderMixin],
-
-    getDefaultProps() {
-        return {
-            borders: BorderStyles.ALL,
-            childKeys: [],
-            disabled: false,
-            focused: false,
-            popoverEnabled: false,
-        };
-    },
+    static defaultProps = {
+        borders: BorderStyles.ALL,
+        childKeys: [],
+        disabled: false,
+        focused: false,
+        popoverEnabled: false,
+    };
 
     componentWillMount() {
         this.buttonSizeStyle = styleForButtonDimensions(
             this.props.heightPx,
             this.props.widthPx
         );
-    },
+    }
 
     componentDidMount() {
         this._preInjectStyles();
-    },
+    }
 
     componentWillUpdate(newProps, newState) {
         // Only recompute the Aphrodite StyleSheet when the button height has
@@ -92,9 +88,9 @@ const KeypadButton = React.createClass({
 
             this._preInjectStyles();
         }
-    },
+    }
 
-    _preInjectStyles() {
+    _preInjectStyles = () => {
         // HACK(charlie): Pre-inject all of the possible styles for the button.
         // This avoids a flickering effect in the echo animation whereby the
         // echoes vary in size as they animate. Note that we need to account for
@@ -116,9 +112,9 @@ const KeypadButton = React.createClass({
                 );
             }
         }
-    },
+    };
 
-    _getFocusStyle(type) {
+    _getFocusStyle = (type) => {
         let focusBackgroundStyle;
         if (type === KeyTypes.INPUT_NAVIGATION ||
                 type === KeyTypes.KEYPAD_NAVIGATION) {
@@ -128,9 +124,9 @@ const KeypadButton = React.createClass({
         }
 
         return [styles.focusBox, focusBackgroundStyle];
-    },
+    };
 
-    _getButtonStyle(type, borders, style) {
+    _getButtonStyle = (type, borders, style) => {
         // Select the appropriate style for the button.
         let backgroundStyle;
         switch (type) {
@@ -176,7 +172,7 @@ const KeypadButton = React.createClass({
             //   See: https://facebook.github.io/react-native/docs/style.html
             ...(Array.isArray(style) ? style : [style]),
         ];
-    },
+    };
 
     render() {
         const {
@@ -251,8 +247,8 @@ const KeypadButton = React.createClass({
                 {maybeCornerDecal}
             </View>;
         }
-    },
-});
+    }
+}
 
 const focusInsetPx = 4;
 const focusBoxZIndex = 0;

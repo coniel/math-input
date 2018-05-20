@@ -1,20 +1,21 @@
+const PropTypes = require('prop-types');
 const React = require('react');
 const {StyleSheet, css} = require('aphrodite');
 
-const Text = React.createClass({
-    propTypes: {
-        children: React.PropTypes.oneOfType([
-            React.PropTypes.arrayOf(React.PropTypes.node),
-            React.PropTypes.node,
+class Text extends React.Component {
+    static propTypes = {
+        children: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.node),
+            PropTypes.node,
         ]),
         // The `dynamicStyle` prop is provided for animating dynamic
         // properties, as creating Aphrodite StyleSheets in animation loops is
         // expensive. `dynamicStyle` should be a raw style object, rather than
         // a StyleSheet.
-        dynamicStyle: React.PropTypes.any,
-        numberOfLines: React.PropTypes.number,
-        style: React.PropTypes.any,
-    },
+        dynamicStyle: PropTypes.any,
+        numberOfLines: PropTypes.number,
+        style: PropTypes.any,
+    };
 
     render() {
         const {numberOfLines, style} = this.props;
@@ -28,8 +29,8 @@ const Text = React.createClass({
         return <span className={className} style={this.props.dynamicStyle}>
             {this.props.children}
         </span>;
-    },
-});
+    }
+}
 
 // https://github.com/necolas/react-native-web/blob/master/src/components/Text/index.js
 const styles = StyleSheet.create({

@@ -1,3 +1,4 @@
+const PropTypes = require('prop-types');
 /**
  * A component that renders a navigation pad, which consists of an arrow for
  * each possible direction.
@@ -17,11 +18,11 @@ const {
 const {BorderStyles} = require('../consts');
 const KeyConfigs = require('../data/key-configs');
 
-const NavigationPad = React.createClass({
-    propTypes: {
-        roundTopLeft: React.PropTypes.bool,
-        style: React.PropTypes.any,
-    },
+class NavigationPad extends React.Component {
+    static propTypes = {
+        roundTopLeft: PropTypes.bool,
+        style: PropTypes.any,
+    };
 
     render() {
         // TODO(charlie): Disable the navigational arrows depending on the
@@ -65,8 +66,8 @@ const NavigationPad = React.createClass({
                 />
             </View>
         </View>;
-    },
-});
+    }
+}
 
 const buttonSizePx = 48;
 const borderRadiusPx = 4;

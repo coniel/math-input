@@ -1,3 +1,4 @@
+const PropTypes = require('prop-types');
 /**
  * A small triangular decal to sit in the corner of a parent component.
  */
@@ -8,10 +9,10 @@ const {StyleSheet} = require('aphrodite');
 const {View} = require('../fake-react-native-web');
 const {gray25} = require('./common-style');
 
-const CornerDecal = React.createClass({
-    propTypes: {
-        style: React.PropTypes.any,
-    },
+class CornerDecal extends React.Component {
+    static propTypes = {
+        style: PropTypes.any,
+    };
 
     render() {
         const {style} = this.props;
@@ -34,8 +35,8 @@ const CornerDecal = React.createClass({
                 />
             </svg>
         </View>;
-    },
-});
+    }
+}
 
 const triangleSizePx = 7;
 
